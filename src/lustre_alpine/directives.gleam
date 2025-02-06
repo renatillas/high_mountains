@@ -60,12 +60,12 @@ pub fn html(js: String) {
 ///
 /// x-model works with the following input elements:
 ///
-/// - <input type="text">
-/// - <textarea>
-/// - <input type="checkbox">
-/// - <input type="radio">
-/// - <select>
-/// - <input type="range">
+/// - input type="text"
+/// - textarea
+/// - input type="checkbox"
+/// - input type="radio"
+/// - select
+/// - input type="range"
 pub fn model(modifiers: List(ModelModifier), js: String) {
   let modifiers =
     list.fold(modifiers, "", fn(acc, modifier) {
