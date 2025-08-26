@@ -1,20 +1,20 @@
-name = "lustre_alpine"
+name = "high_mountains"
 version = "1.0.0"
 
 # Fill out these fields if you intend to generate HTML documentation or publish
 # your project to the Hex package manager.
 #
-description = "Lustre Alpine is a Gleam library for working with Alpine JS through Lustre attributes."
+description = "High Mountains is a Gleam library for working with Alpine JS through Lustre attributes."
 licences = ["MIT"]
-repository = { type = "github", user = "renatillas", repo = "lustre-alpine" }
+repository = { type = "github", user = "renatillas", repo = "high_mountains" }
 # links = [{ title = "Website", href = "" }]
 #
 # For a full reference of all the available options, you can have a look at
 # https://gleam.run/writing-gleam/gleam-toml/.
 
 [dependencies]
-gleam_stdlib = ">= 0.44.0 and < 2.0.0"
-lustre = ">= 4.6.3 and < 5.0.0"
+gleam_stdlib = ">= 0.56.0 and < 2.0.0"
+lustre = ">= 5.0.0 and < 6.0.0"
 
 [dev-dependencies]
 gleeunit = ">= 1.0.0 and < 2.0.0"

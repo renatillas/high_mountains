@@ -1,10 +1,8 @@
-import gleam/int
 import gleam/list
-import gleam/option.{None, Some}
+import high_mountains/event_modifier.{type EventModifier}
+import high_mountains/model_modifier.{type ModelModifier}
+import high_mountains/transition_modifier.{type TransitionModifier}
 import lustre/attribute.{attribute}
-import lustre_alpine/event.{type EventModifier}
-import lustre_alpine/model.{type ModelModifier}
-import lustre_alpine/transition.{type ScaleOrigin, type TransitionModifier}
 
 /// Everything in Alpine starts with the x-data directive.
 ///
@@ -39,7 +37,7 @@ pub fn bind(attribute attr: String, js js: String) {
 pub fn on(event: String, modifiers: List(EventModifier), js: String) {
   let modifiers =
     list.fold(modifiers, "", fn(acc, modifier) {
-      acc <> event_modifier_to_string(modifier)
+      acc <> event_modifier.to_string(modifier)
     })
   attribute("x-on:" <> event <> modifiers, js)
 }
@@ -69,7 +67,7 @@ pub fn html(js: String) {
 pub fn model(modifiers: List(ModelModifier), js: String) {
   let modifiers =
     list.fold(modifiers, "", fn(acc, modifier) {
-      acc <> model_modifier_to_string(modifier)
+      acc <> model_modifier.to_string(modifier)
     })
   attribute("x-model" <> modifiers, js)
 }
@@ -95,7 +93,7 @@ pub fn key(js: String) {
 pub fn transition_helper(modifiers: List(TransitionModifier)) {
   let modifiers =
     list.fold(modifiers, "", fn(acc, modifier) {
-      acc <> transtion_modifier_to_string(modifier)
+      acc <> transition_modifier.to_string(modifier)
     })
   attribute("x-transition" <> modifiers, "")
 }
@@ -103,7 +101,7 @@ pub fn transition_helper(modifiers: List(TransitionModifier)) {
 pub fn transition_helper_enter(modifiers: List(TransitionModifier)) {
   let modifiers =
     list.fold(modifiers, "", fn(acc, modifier) {
-      acc <> transtion_modifier_to_string(modifier)
+      acc <> transition_modifier.to_string(modifier)
     })
   attribute("x-transition:enter" <> modifiers, "")
 }
@@ -111,7 +109,7 @@ pub fn transition_helper_enter(modifiers: List(TransitionModifier)) {
 pub fn transition_helper_leave(modifiers: List(TransitionModifier)) {
   let modifiers =
     list.fold(modifiers, "", fn(acc, modifier) {
-      acc <> transtion_modifier_to_string(modifier)
+      acc <> transition_modifier.to_string(modifier)
     })
   attribute("x-transition:leave" <> modifiers, "")
 }
@@ -196,65 +194,4 @@ pub fn x_if(js: String) {
 ///x-id is meant to be used in conjunction with the $id(...) magic.
 pub fn id(js: String) {
   attribute("x-id", js)
-}
-
-fn event_modifier_to_string(mod: EventModifier) {
-  case mod {
-    event.Prevent -> ".prevent"
-    event.Stop -> ".stop"
-    event.Outside -> ".outside"
-    event.Window -> ".window"
-    event.Document -> ".document"
-    event.Once -> ".once"
-    event.Debounce(None) -> ".debounce"
-    event.Debounce(Some(ms)) -> ".debounce." <> int.to_string(ms) <> "ms"
-    event.Throttle(None) -> ".throttle"
-    event.Throttle(Some(ms)) -> ".throttle." <> int.to_string(ms) <> "ms"
-    event.Self -> ".self"
-    event.Camel -> ".camel"
-    event.Dot -> ".dot"
-    event.Passive -> ".passive"
-    event.Capture -> ".capture"
-  }
-}
-
-fn model_modifier_to_string(mod: ModelModifier) {
-  case mod {
-    model.Lazy -> ".lazy"
-    model.Number -> ".number"
-    model.Boolean -> ".boolean"
-    model.Debounce(None) -> ".debounce"
-    model.Throttle(None) -> ".throttle"
-    model.Debounce(Some(ms)) -> ".debounce." <> int.to_string(ms) <> "ms"
-    model.Throttle(Some(ms)) -> ".throttle." <> int.to_string(ms) <> "ms"
-    model.Fill -> ".fill"
-  }
-}
-
-fn transtion_modifier_to_string(mod: TransitionModifier) {
-  case mod {
-    transition.Delay(ms) -> ".delay." <> int.to_string(ms) <> "ms"
-    transition.Duration(ms) -> ".duration." <> int.to_string(ms) <> "ms"
-    transition.Opacity -> ".opacity"
-    transition.Scale(Some(percentage), origin) ->
-      ".scale."
-      <> int.to_string(percentage)
-      <> list.fold(origin, "", fn(acc, origin) {
-        acc <> scale_origin_to_string(origin)
-      })
-    transition.Scale(None, origin) ->
-      ".scale."
-      <> list.fold(origin, "", fn(acc, origin) {
-        acc <> scale_origin_to_string(origin)
-      })
-  }
-}
-
-fn scale_origin_to_string(origin: ScaleOrigin) {
-  case origin {
-    transition.Bottom -> ".bottom"
-    transition.Left -> ".left"
-    transition.Right -> ".right"
-    transition.Top -> ".top"
-  }
 }
